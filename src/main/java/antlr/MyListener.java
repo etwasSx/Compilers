@@ -46,24 +46,70 @@ public class MyListener extends langBaseListener {
     }
 
     @Override
-    public void exitDiv(langParser.DivContext ctx) {
+    public void exitSub(langParser.SubContext ctx) {
         String variableName = ctx.ID().size() > 1 ?
                 ctx.ID(1).getText() :
                 ctx.ID(0).getText();
-        int denominator = ctx.ID().size() > 1 ?
+        int value = ctx.ID().size() > 1 ?
                 variables.get(ctx.ID(0).getText()) :
                 Integer.parseInt(ctx.NUM().getText());
 
-        if (denominator != 0) {
-            int value = ctx.ID().size() > 1 ?
-                    variables.get(ctx.ID(0).getText()) :
-                    Integer.parseInt(ctx.NUM().getText());
+        variables.put(variableName, variables.get(variableName) - value);
+    }
 
-            variables.put(variableName, value / denominator);
+    @Override
+    public void exitDiv(langParser.DivContext ctx) {
+        String variableName = ctx.ID(0).getText();  // Используем ID(0), чтобы результат сохранился в первой переменной
+        int value = ctx.ID().size() > 1 ?
+                variables.get(ctx.ID(1).getText()) :
+                Integer.parseInt(ctx.NUM().getText());
+
+        if (value == 0) {
+            System.err.println("Недопустимое деление на 0. Программа завершена с ошибкой.");
+            System.exit(1);
         } else {
-            System.err.println("Error: Division by zero");
+            variables.put(variableName, variables.get(variableName) / value);
         }
     }
+
+
+    @Override
+    public void exitCompare(langParser.CompareContext ctx) {
+        String variableName1 = ctx.ID(0).getText();
+        String variableName2 = ctx.ID(1).getText();
+
+        int value1 = ctx.ID().size() > 1 && variables.containsKey(variableName1) ?
+                variables.get(variableName1) :
+                Integer.parseInt(ctx.NUM(0).getText());
+
+        int value2 = ctx.ID().size() > 1 && variables.containsKey(variableName2) ?
+                variables.get(variableName2) :
+                Integer.parseInt(ctx.NUM(1).getText());
+
+        boolean result = value1 == value2;
+
+        String resultVariableName = ctx.ID(2).getText();
+        variables.put(resultVariableName, result ? 1 : 0);
+    }
+
+
+
+    @Override
+    public void exitMod(langParser.ModContext ctx) {
+        String variableName = ctx.ID(0).getText();  // Используем ID(0), чтобы результат сохранился в первой переменной
+        int value = ctx.ID().size() > 1 ?
+                variables.get(ctx.ID(1).getText()) :
+                Integer.parseInt(ctx.NUM().getText());
+
+        if (value == 0) {
+            System.err.println("Недопустимое деление на 0. Программа завершена с ошибкой.");
+            System.exit(1);
+        } else {
+            variables.put(variableName, variables.get(variableName) % value);
+        }
+    }
+
+
 
     public static void main(String[] args){
         try {

@@ -8,18 +8,13 @@ stat    : assign
 	    | div
 	    | compare
 	    | mod
-	    | or
-	    | and
 	    ;
 assign      : 'let' ID 'be' (ID | NUM) ;
 add         : 'add' (NUM | ID) 'to' ID;
 sub         : 'sub' (NUM | ID) 'from' ID;
-div         : 'div' (NUM | ID) 'by' ID;
-compare     : 'compare' (NUM | ID) 'with' (NUM | ID);
-mod         : 'mod' (NUM | ID) 'by' ID;
-or          : 'or' (ID | 'true' | 'false') 'with' (ID | 'true' | 'false');
-and         : 'and' (ID | 'true' | 'false') 'with' (ID | 'true' | 'false');
-
+div         : 'div' ID 'by' (NUM | ID);
+compare     : 'compare' (NUM | ID) 'with' (NUM | ID) 'save_in' ID;
+mod         : 'mod' ID 'by' (NUM | ID);
 
 
 print       : 'print' (NUM | ID);
