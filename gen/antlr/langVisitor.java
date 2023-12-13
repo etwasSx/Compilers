@@ -41,6 +41,36 @@ public interface langVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSub(langParser.SubContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link langParser#div}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDiv(langParser.DivContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link langParser#compare}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompare(langParser.CompareContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link langParser#mod}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMod(langParser.ModContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link langParser#or}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOr(langParser.OrContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link langParser#and}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnd(langParser.AndContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link langParser#print}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

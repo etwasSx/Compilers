@@ -58,6 +58,56 @@ public interface langListener extends ParseTreeListener {
 	 */
 	void exitSub(langParser.SubContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link langParser#div}.
+	 * @param ctx the parse tree
+	 */
+	void enterDiv(langParser.DivContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link langParser#div}.
+	 * @param ctx the parse tree
+	 */
+	void exitDiv(langParser.DivContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link langParser#compare}.
+	 * @param ctx the parse tree
+	 */
+	void enterCompare(langParser.CompareContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link langParser#compare}.
+	 * @param ctx the parse tree
+	 */
+	void exitCompare(langParser.CompareContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link langParser#mod}.
+	 * @param ctx the parse tree
+	 */
+	void enterMod(langParser.ModContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link langParser#mod}.
+	 * @param ctx the parse tree
+	 */
+	void exitMod(langParser.ModContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link langParser#or}.
+	 * @param ctx the parse tree
+	 */
+	void enterOr(langParser.OrContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link langParser#or}.
+	 * @param ctx the parse tree
+	 */
+	void exitOr(langParser.OrContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link langParser#and}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnd(langParser.AndContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link langParser#and}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnd(langParser.AndContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link langParser#print}.
 	 * @param ctx the parse tree
 	 */

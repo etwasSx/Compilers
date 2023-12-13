@@ -45,6 +45,26 @@ public class MyListener extends langBaseListener {
         System.out.println(output);
     }
 
+    @Override
+    public void exitDiv(langParser.DivContext ctx) {
+        String variableName = ctx.ID().size() > 1 ?
+                ctx.ID(1).getText() :
+                ctx.ID(0).getText();
+        int denominator = ctx.ID().size() > 1 ?
+                variables.get(ctx.ID(0).getText()) :
+                Integer.parseInt(ctx.NUM().getText());
+
+        if (denominator != 0) {
+            int value = ctx.ID().size() > 1 ?
+                    variables.get(ctx.ID(0).getText()) :
+                    Integer.parseInt(ctx.NUM().getText());
+
+            variables.put(variableName, value / denominator);
+        } else {
+            System.err.println("Error: Division by zero");
+        }
+    }
+
     public static void main(String[] args){
         try {
             org.antlr.v4.runtime.CharStream input = CharStreams.fromFileName("C:\\Users\\shapo\\IdeaProjects\\Compilers\\src\\main\\java\\antlr\\test.lang");

@@ -1,7 +1,7 @@
 begin
 	let a be 5
-	let b be 14
-	add a to b
+	let b be 15
+	div a by b
 	print b
 	print 10
 end
