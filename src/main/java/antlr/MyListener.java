@@ -74,27 +74,6 @@ public class MyListener extends langBaseListener {
 
 
     @Override
-    public void exitCompare(langParser.CompareContext ctx) {
-        String variableName1 = ctx.ID(0).getText();
-        String variableName2 = ctx.ID(1).getText();
-
-        int value1 = ctx.ID().size() > 1 && variables.containsKey(variableName1) ?
-                variables.get(variableName1) :
-                Integer.parseInt(ctx.NUM(0).getText());
-
-        int value2 = ctx.ID().size() > 1 && variables.containsKey(variableName2) ?
-                variables.get(variableName2) :
-                Integer.parseInt(ctx.NUM(1).getText());
-
-        boolean result = value1 == value2;
-
-        String resultVariableName = ctx.ID(2).getText();
-        variables.put(resultVariableName, result ? 1 : 0);
-    }
-
-
-
-    @Override
     public void exitMod(langParser.ModContext ctx) {
         String variableName = ctx.ID(0).getText();  // Используем ID(0), чтобы результат сохранился в первой переменной
         int value = ctx.ID().size() > 1 ?
@@ -110,6 +89,137 @@ public class MyListener extends langBaseListener {
     }
 
 
+    public static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+    }
+
+    @Override
+    public void exitCompare(langParser.CompareContext ctx) {
+        String variableName1 = String.valueOf(ctx.children.get(1));
+        String variableName2 = String.valueOf(ctx.children.get(3));
+
+        int cnt = 0;
+        int value1 = 0;
+        if (isNumeric(variableName1)){
+            value1 = Integer.parseInt(variableName1);
+        }
+        else{
+            value1 = variables.get(ctx.ID(cnt).getText());
+            cnt += 1;
+        }
+
+        int value2 = 0;
+        if (isNumeric(variableName2)){
+            value2 = Integer.parseInt(variableName2);
+        }
+        else{
+            value2 = variables.get(ctx.ID(cnt).getText());
+            cnt += 1;
+        }
+
+        String resultVariableName = ctx.ID(cnt).getText();
+
+        boolean result = value1 == value2;
+
+        variables.put(resultVariableName, result ? 1 : 0);
+    }
+
+
+    @Override
+    public void exitExrpession(langParser.ExrpessionContext ctx) {
+        String valueVariable1 = String.valueOf(ctx.children.get(0));
+        String valueVariable2 = String.valueOf(ctx.children.get(2));
+
+        int cnt = 0;
+        int value1 = 0;
+        if (isNumeric(valueVariable1)){
+            value1 = Integer.parseInt(valueVariable1);
+        }
+        else{
+            value1 = variables.get(ctx.ID(cnt).getText());
+            cnt += 1;
+        }
+
+
+        int value2 = 0;
+        if (isNumeric(valueVariable2)){
+            value2 = Integer.parseInt(valueVariable2);
+        }
+        else{
+            value2 = variables.get(ctx.ID(cnt).getText());
+            cnt += 1;
+        }
+
+        String resultVariable = ctx.ID(cnt).getText();
+
+        String operator = (ctx.OVER() != null && ctx.OVER().getText().equals(">")) ? ">" : "<"; // Получить текст оператора (может быть '>' или '<')
+
+        boolean result;
+
+        switch (operator) {
+            case ">":
+                result = value1 > value2;
+                break;
+            case "<":
+                result = value1 < value2;
+                break;
+            default:
+                System.err.println("Unsupported operator: " + operator);
+                return;
+        }
+
+        variables.put(resultVariable, result ? 1 : 0);
+
+    }
+
+
+    @Override
+    public void exitPow(langParser.PowContext ctx){
+        String valueVariable1 = String.valueOf(ctx.children.get(0));
+        int value1 = variables.get(ctx.ID(0).getText());
+
+        String valueVariable2 = String.valueOf(ctx.children.get(2));
+        int value2 = 0;
+        if (isNumeric(valueVariable2)){
+            value2 = Integer.parseInt(valueVariable2);
+        }
+        else {
+            value2 = variables.get(ctx.ID(1).getText());
+        }
+
+        value1 = (int)Math.pow(value1, value2);
+        variables.put(valueVariable1, value1);
+    }
+
+    @Override
+    public void exitMult(langParser.MultContext ctx){
+        String valueVariable1 = String.valueOf(ctx.children.get(0));
+        String valueVariable2 = String.valueOf(ctx.children.get(2));
+
+        int cnt = 0;
+        int value1 = 0;
+        if (isNumeric(valueVariable1)){
+            value1 = Integer.parseInt(valueVariable1);
+        }
+        else{
+            value1 = variables.get(ctx.ID(cnt).getText());
+            cnt += 1;
+        }
+
+
+        int value2 = 0;
+        if (isNumeric(valueVariable2)){
+            value2 = Integer.parseInt(valueVariable2);
+        }
+        else{
+            value2 = variables.get(ctx.ID(cnt).getText());
+            cnt += 1;
+        }
+        String resultVariable = ctx.ID(cnt).getText();
+
+        int result = value1 * value2;
+        variables.put(resultVariable, result);
+    }
 
     public static void main(String[] args){
         try {

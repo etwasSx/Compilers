@@ -1,7 +1,7 @@
 begin
 	let a be 12
 	let b be 4
-	let sex be 666
-	compare a with b save_in sex
-	print sex
+	let s be 666
+	a * 10 = s
+	print s
 end
